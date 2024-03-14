@@ -1,16 +1,20 @@
-from transformers import BartForConditionalGeneration, BartTokenizer
-import torch
 import pickle
+import os
 
-model = BartForConditionalGeneration.from_pretrained(
-    'facebook/bart-large-cnn')
-tokenizer = BartTokenizer.from_pretrained(
-    'facebook/bart-large-cnn')
+from transformers import PegasusForConditionalGeneration, PegasusTokenizer
+import torch
+class Training:
+    def __init__(self):
+        self.model_name = "google/pegasus-xsum" 
+        self.tokenizer = PegasusTokenizer.from_pretrained(self.model_name)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model_pegasus = PegasusForConditionalGeneration.from_pretrained(self.model_name).to(device)
+        
+    def copy_model(self):
+        pickle.dump(self.model_name,open("text_model.pkl","wb"))
+        pickle.dump(self.model_name,open("text_tokenizer.pkl",'wb'))
+        
+        
+training = Training()
+training.copy_model()
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print ("device ",device)
-model = model.to(device)
-
-
-pickle.dump(model,open("model/text_model.pkl","wb"))
-pickle.dump(tokenizer,open("model/text_tokenizer.pkl",'wb'))

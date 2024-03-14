@@ -16,7 +16,7 @@ DOCKER_IMAGE=summarization
 
 .PHONY: build-docker
 build-docker:
-	$(DOCKERBUILD) -t ${DOCKER_IMAGE} .
+	$(DOCKERBUILD) -t ${DOCKER_IMAGE} -f ${DOCKERFILE} . 
 .PHONY: run-docker
 run-docker:
 	$(DOCKERRUN) -p 8000:8000 ${DOCKER_IMAGE}
